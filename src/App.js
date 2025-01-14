@@ -9,6 +9,7 @@ import UserInvoices from "./components/UserInvoices";
 import NavigationBar from './components/Navbar';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
+
 const App = () => {
   return (
     <Router>

@@ -1,19 +1,19 @@
-import React, { useState, useEffect } from "react";
-import axios from "axios";
-import { useNavigate } from "react-router-dom"; // ניווט לעמוד החשבוניות
+import React, { useState, useEffect } from "react"
+import axios from "axios"
+import { useNavigate } from "react-router-dom" // ניווט לעמוד החשבוניות
 
 const ClientList = () => {
-  const [clients, setClients] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-  const navigate = useNavigate();
+  const [clients, setClients] = useState([])
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState(null)
+  const navigate = useNavigate()
 
   // פונקציה לטעינת הלקוחות מה-API
   useEffect(() => {
-    const token = localStorage.getItem("access_token");
+    const token = localStorage.getItem("access_token")
     if (!token) {
-      alert("נא להתחבר קודם.");
-      return;
+      alert("נא להתחבר קודם.")
+      return
     }
 
     axios
@@ -22,31 +22,31 @@ const ClientList = () => {
       })
       .then((response) => {
         if (response.data && Array.isArray(response.data.clients)) {
-          setClients(response.data.clients);
+          setClients(response.data.clients)
         } else {
-          setError("שגיאה בטעינת הלקוחות.");
+          setError("שגיאה בטעינת הלקוחות.")
         }
-        setLoading(false);
+        setLoading(false)
       })
       .catch((error) => {
         console.error(
           "Error fetching clients:",
           error.response ? error.response.data : error.message
-        );
-        setError("שגיאה בטעינת הלקוחות.");
-        setLoading(false);
-      });
-  }, []);
+        )
+        setError("שגיאה בטעינת הלקוחות.")
+        setLoading(false)
+      })
+  }, [])
 
   const viewUserInvoices = () => {
-    navigate("/user-invoices"); // מעבר לעמוד החשבוניות
-  };
+    navigate("/user-invoices") // מעבר לעמוד החשבוניות
+  }
 
   const deleteClient = (clientId) => {
-    const token = localStorage.getItem("access_token");
+    const token = localStorage.getItem("access_token")
     if (!token) {
-      alert("נא להתחבר קודם.");
-      return;
+      alert("נא להתחבר קודם.")
+      return
     }
 
     if (window.confirm("האם אתה בטוח שברצונך למחוק את הלקוח?")) {
@@ -55,32 +55,32 @@ const ClientList = () => {
           headers: { Authorization: `Bearer ${token}` },
         })
         .then(() => {
-          alert("הלקוח נמחק בהצלחה!");
-          setClients(clients.filter((client) => client.id !== clientId));
+          alert("הלקוח נמחק בהצלחה!")
+          setClients(clients.filter((client) => client.id !== clientId))
         })
         .catch((error) => {
-          console.error("Error deleting client:", error);
-          alert("שגיאה במחיקת הלקוח.");
-        });
+          console.error("Error deleting client:", error)
+          alert("שגיאה במחיקת הלקוח.")
+        })
     }
-  };
+  }
 
   const addClient = () => {
-    const clientName = prompt("הכנס שם לקוח:");
-    const clientID = prompt("הכנס ח.פ/ת.ז:");
-    const clientEmail = prompt("הכנס אימייל לקוח:");
-    const clientPhone = prompt("הכנס טלפון לקוח:");
-    const clientAddress = prompt("הכנס כתובת (אופציונלי):");
+    const clientName = prompt("הכנס שם לקוח:")
+    const clientID = prompt("הכנס ח.פ/ת.ז:")
+    const clientEmail = prompt("הכנס אימייל לקוח:")
+    const clientPhone = prompt("הכנס טלפון לקוח:")
+    const clientAddress = prompt("הכנס כתובת (אופציונלי):")
 
     if (!clientName || !clientID || !clientEmail || !clientPhone) {
-      alert("כל השדות (למעט כתובת) נדרשים.");
-      return;
+      alert("כל השדות (למעט כתובת) נדרשים.")
+      return
     }
 
-    const token = localStorage.getItem("access_token");
+    const token = localStorage.getItem("access_token")
     if (!token) {
-      alert("נא להתחבר קודם.");
-      return;
+      alert("נא להתחבר קודם.")
+      return
     }
 
     axios
@@ -98,29 +98,29 @@ const ClientList = () => {
         }
       )
       .then((response) => {
-        alert("לקוח נוסף בהצלחה!");
-        setClients([...clients, response.data.client]);
+        alert("לקוח נוסף בהצלחה!")
+        setClients([...clients, response.data.client])
       })
       .catch((error) => {
         console.error(
           "Error adding client:",
           error.response ? error.response.data : error.message
-        );
-        alert("שגיאה בהוספת הלקוח.");
-      });
-  };
+        )
+        alert("שגיאה בהוספת הלקוח.")
+      })
+  }
 
   const selectClient = (client) => {
-    localStorage.setItem("selected_client", JSON.stringify(client));
-    window.location.href = "/create-invoice";
-  };
+    localStorage.setItem("selected_client", JSON.stringify(client))
+    window.location.href = "/create-invoice"
+  }
 
   if (loading) {
-    return <div>טעינה...</div>;
+    return <div>טעינה...</div>
   }
 
   if (error) {
-    return <div className="alert alert-danger">{error}</div>;
+    return <div className="alert alert-danger">{error}</div>
   }
 
   return (
@@ -173,7 +173,7 @@ const ClientList = () => {
         </tbody>
       </table>
     </div>
-  );
-};
+  )
+}
 
-export default ClientList;
+export default ClientList
